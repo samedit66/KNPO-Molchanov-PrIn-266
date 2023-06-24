@@ -92,6 +92,10 @@ struct Token {
 	TOKEN_TYPE type;
 	/// Тектовое представление токена
 	std::string text;
+	/// Индекс начала токена в строке
+	int start_index;
+	/// Индекс конца токена в строке
+	int end_index;
 };
 
 
@@ -106,7 +110,9 @@ private:
 	*/
 	class TokenRegex {
 	private:
+		/// Тип токена
 		TOKEN_TYPE type;
+		/// Регулярное выражение, соответствующее токену
 		std::regex matching_regex;
 
 	public:
@@ -124,13 +130,13 @@ private:
 		TOKEN_TYPE get_type();
 
 		/*!
-		Проверяет наличие токена в итераторе-строке
-		\param[in] start Итератор начала строки
-		\param[in] end Итератор конца строки
+		Проверяет наличие токена в строке
+		\param[in] str Строка для проверки
+		\param[in] start_index Индекс с которого начинается поиск
 		\param[out] m Объект, в котором хранятся данные о результате сопоставления
 		\return Флаг, указывающий об успешности результата сопоставления
 		*/
-		bool match(std::string::const_iterator start, std::string::const_iterator end, std::smatch& m);
+		bool match(const std::string& str, int start_index, std::smatch& m);
 	};
 
 	/// Допустимые шаблоны для токенов
@@ -155,15 +161,14 @@ private:
 	/*!
 	\brief Выделяет следующий токен из строки-итератора
 	
-	Выделяет следующий токен из строки-итератора. В случае, когда
-	токен не нужно игнорировать, он добавляется в выходной вектор
-	\param[in] start Начало итератора строки
-	\param[in] end Конец итератора строки
+	Выделяет следующий токен из строки. В случае, когда токен не нужно игнорировать, он добавляется список токенов
+	\param[in] str Строка из которой извлекаются токены
+	\param[in] start_index Индекс с которого начнется поиск и извлечение токенов
 	\param[out] tokens Считанные токены
-	\return Итератор, указывающий на символ, следующий сразу после последнего символа считанного токена
+	\return Индекс указывающий на символ, идущий сразу после найденого токена
 	\throw NoTokenFoundError В случае, если не было найдено соответствующего шаблона для извлечения токена
 	*/
-	std::string::const_iterator extract_token(std::string::const_iterator start, std::string::const_iterator end, std::vector<Token>& tokens);
+	int extract_token(const std::string& str, int start_index, std::vector<Token>& tokens);
 
 public:
 	/*!

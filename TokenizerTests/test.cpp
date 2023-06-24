@@ -1,3 +1,4 @@
+#include <pair>
 #include <vector>
 #include <string>
 
@@ -29,98 +30,108 @@ TEST(TokenizerTest, String) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
 	std::string str = "\"string\"";
-	Token expected_token = { TOKEN_TYPE::STRING, "\"string\"" };
+	Token expected_token = { TOKEN_TYPE::STRING, "\"string\"", 0, 7 };
 
 	tokenizer.tokenize(str, tokens);
 
 	ASSERT_EQ(tokens.size(), 1);
 	EXPECT_EQ(tokens[0].type, expected_token.type);
 	EXPECT_EQ(tokens[0].text, expected_token.text);
+	EXPECT_EQ(tokens[0].start_index, expected_token.start_index);
+	EXPECT_EQ(tokens[0].end_index, expected_token.end_index);
 }
 
 TEST(TokenizerTest, Char) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
 	std::string str = "'a'";
-	Token expected_token = { TOKEN_TYPE::CHAR, "'a'" };
+	Token expected_token = { TOKEN_TYPE::CHAR, "'a'", 0, 2 };
 
 	tokenizer.tokenize(str, tokens);
 
 	ASSERT_EQ(tokens.size(), 1);
 	EXPECT_EQ(tokens[0].type, expected_token.type);
 	EXPECT_EQ(tokens[0].text, expected_token.text);
+	EXPECT_EQ(tokens[0].start_index, expected_token.start_index);
+	EXPECT_EQ(tokens[0].end_index, expected_token.end_index);
 }
 
 TEST(TokenizerTest, Numbers) {
 	Tokenizer tokenizer;
-	std::vector<Token> tokens;
-	std::string str = "0xffa21 0o1235 102132 0b101010111";
-	std::vector<Token> expected_tokens = {
-		{ TOKEN_TYPE::HEX_NUMBER, "0xffa21" },
-		{ TOKEN_TYPE::OCTAL_NUMBER, "0o1235" },
-		{ TOKEN_TYPE::DECIMAL_NUMBER, "102132" },
-		{ TOKEN_TYPE::BINARY_NUMBER, "0b101010111" }
+
+	std::vector<std::pair<std::string, Token>> test_data = {
+		{ "0xffa21", { TOKEN_TYPE::HEX_NUMBER, "0xffa21", 0, 6 } },
+		{ "0o1235", { TOKEN_TYPE::OCTAL_NUMBER, "0o1235", 0, 5 } },
+		{ "102132", { TOKEN_TYPE::DECIMAL_NUMBER, "102132", 0, 5 } },
+		{ "0b10101", { TOKEN_TYPE::BINARY_NUMBER, "0b10101", 0, 6 } },
 	};
 
-	tokenizer.tokenize(str, tokens);
+	for (const auto& test : test_data) {
+		std::vector<Token> tokens;
 
-	ASSERT_EQ(tokens.size(), expected_tokens.size());
-	for (int i = 0; i < tokens.size(); i++) {
-		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
-		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
+		tokenizer.tokenize(test.first, tokens);
+
+		ASSERT_EQ(tokens.size(), 1);
+		EXPECT_EQ(tokens[0].type, test.second.type);
+		EXPECT_EQ(tokens[0].text, test.second.text);
+		EXPECT_EQ(tokens[0].start_index, test.second.start_index);
+		EXPECT_EQ(tokens[0].end_index, test.second.end_index);
 	}
 }
 
 TEST(TokenizerTest, ReservedWords) {
 	Tokenizer tokenizer;
-	std::vector<Token> tokens;
-	std::string str = "add sub and or xor not shr shl set ld st ldi sti jmp jeq jgt call ret data r0 r1 r2 r3 r4 r5 r6 r7";
-	std::vector<Token> expected_tokens = {
-		{ TOKEN_TYPE::ADD, "add" },
-		{ TOKEN_TYPE::SUB, "sub" },
-		{ TOKEN_TYPE::AND, "and" },
-		{ TOKEN_TYPE::OR, "or" },
-		{ TOKEN_TYPE::XOR, "xor" },
-		{ TOKEN_TYPE::NOT, "not" },
-		{ TOKEN_TYPE::SHR, "shr" },
-		{ TOKEN_TYPE::SHL, "shl" },
-		{ TOKEN_TYPE::SET, "set" },
-		{ TOKEN_TYPE::LD, "ld" },
-		{ TOKEN_TYPE::ST, "st" },
-		{ TOKEN_TYPE::LDI, "ldi" },
-		{ TOKEN_TYPE::STI, "sti" },
-		{ TOKEN_TYPE::JMP, "jmp" },
-		{ TOKEN_TYPE::JEQ, "jeq" },
-		{ TOKEN_TYPE::JGT, "jgt" },
-		{ TOKEN_TYPE::CALL, "call" },
-		{ TOKEN_TYPE::RET, "ret" },
-		{ TOKEN_TYPE::DATA, "data" },
-		{ TOKEN_TYPE::R0, "r0" },
-		{ TOKEN_TYPE::R1, "r1" },
-		{ TOKEN_TYPE::R2, "r2" },
-		{ TOKEN_TYPE::R3, "r3" },
-		{ TOKEN_TYPE::R4, "r4" },
-		{ TOKEN_TYPE::R5, "r5" },
-		{ TOKEN_TYPE::R6, "r6" },
-		{ TOKEN_TYPE::R7, "r7" },
+
+	std::vector<std::pair<std::string, Token>> test_data = {
+		{ "add", { TOKEN_TYPE::ADD, "add", 0, 2 } },
+		{ "sub", { TOKEN_TYPE::SUB, "sub", 0, 2 } },
+		{ "and", { TOKEN_TYPE::AND, "and", 0, 2 } },
+		{ "or", { TOKEN_TYPE::OR, "or", 0, 1 } },
+		{ "xor", { TOKEN_TYPE::XOR, "xor", 0, 2 } },
+		{ "not", { TOKEN_TYPE::NOT, "not", 0, 2 } },
+		{ "shr", { TOKEN_TYPE::SHR, "shr", 0, 2 } },
+		{ "shl", { TOKEN_TYPE::SHL, "shl", 0, 2 } },
+		{ "set", { TOKEN_TYPE::SET, "set", 0, 2 } },
+		{ "ld", { TOKEN_TYPE::LD, "ld", 0, 1 } },
+		{ "st", { TOKEN_TYPE::ST, "st", 0, 1 } },
+		{ "ldi", { TOKEN_TYPE::LDI, "ldi", 0, 2 } },
+		{ "sti", { TOKEN_TYPE::STI, "sti", 0, 2 } },
+		{ "jmp", { TOKEN_TYPE::JMP, "jmp", 0, 2 } },
+		{ "jeq", { TOKEN_TYPE::JEQ, "jeq", 0, 2 } },
+		{ "jgt", { TOKEN_TYPE::JGT, "jgt", 0, 2 } },
+		{ "call", { TOKEN_TYPE::CALL, "call", 0, 3 } },
+		{ "ret", { TOKEN_TYPE::RET, "ret", 0, 2 } },
+		{ "data", { TOKEN_TYPE::DATA, "data", 0, 3 } },
+		{ "r0", { TOKEN_TYPE::R0, "r0", 0, 1  } },
+		{ "r1", { TOKEN_TYPE::R1, "r1", 0, 1  } },
+		{ "r2", { TOKEN_TYPE::R2, "r2", 0, 1  } },
+		{ "r3", { TOKEN_TYPE::R3, "r3", 0, 1  } },
+		{ "r4", { TOKEN_TYPE::R4, "r4", 0, 1  } },
+		{ "r5", { TOKEN_TYPE::R5, "r5", 0, 1  } },
+		{ "r6", { TOKEN_TYPE::R6, "r6", 0, 1  } },
+		{ "r7", { TOKEN_TYPE::R7, "r7", 0, 1  } },
 	};
 
-	tokenizer.tokenize(str, tokens);
+	for (const auto& test : test_data) {
+		std::vector<Token> tokens;
 
-	ASSERT_EQ(tokens.size(), expected_tokens.size());
-	for (int i = 0; i < tokens.size(); i++) {
-		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
-		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
+		tokenizer.tokenize(test.first, tokens);
+
+		ASSERT_EQ(tokens.size(), 1);
+		EXPECT_EQ(tokens[0].type, test.second.type);
+		EXPECT_EQ(tokens[0].text, test.second.text);
+		EXPECT_EQ(tokens[0].start_index, test.second.start_index);
+		EXPECT_EQ(tokens[0].end_index, test.second.end_index);
 	}
 }
 
-TEST(TokenizerTest, Names) {
+TEST(TokenizerTest, SeveralNames) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
 	std::string str = "hello world";
 	std::vector<Token> expected_tokens = {
-		{ TOKEN_TYPE::NAME, "hello" },
-		{ TOKEN_TYPE::NAME, "world" },
+		{ TOKEN_TYPE::NAME, "hello", 0, 4 },
+		{ TOKEN_TYPE::NAME, "world", 6, 10 },
 	};
 
 	tokenizer.tokenize(str, tokens);
@@ -129,26 +140,31 @@ TEST(TokenizerTest, Names) {
 	for (int i = 0; i < tokens.size(); i++) {
 		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
 		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
+		EXPECT_EQ(tokens[i].start_index, expected_tokens[i].start_index);
+		EXPECT_EQ(tokens[i].end_index, expected_tokens[i].end_index);
 	}
 }
 
 TEST(TokenizerTest, SpecialSymbols) {
 	Tokenizer tokenizer;
-	std::vector<Token> tokens;
-	std::string str = "+ - , :";
-	std::vector<Token> expected_tokens = {
-		{ TOKEN_TYPE::PLUS, "+" },
-		{ TOKEN_TYPE::MINUS, "-" },
-		{ TOKEN_TYPE::COMMA, "," },
-		{ TOKEN_TYPE::COLON, ":" },
+
+	std::vector<std::pair<std::string, Token>> test_data = {
+		{ "+", { TOKEN_TYPE::PLUS, "+", 0, 0 }  },
+		{ "-", { TOKEN_TYPE::MINUS, "-", 0, 0 } },
+		{ ",", { TOKEN_TYPE::COMMA, ",", 0, 0 } },
+		{ ":", { TOKEN_TYPE::COLON, ":", 0, 0 } },
 	};
 
-	tokenizer.tokenize(str, tokens);
+	for (const auto& test : test_data) {
+		std::vector<Token> tokens;
 
-	ASSERT_EQ(tokens.size(), expected_tokens.size());
-	for (int i = 0; i < tokens.size(); i++) {
-		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
-		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
+		tokenizer.tokenize(test.first, tokens);
+
+		ASSERT_EQ(tokens.size(), 1);
+		EXPECT_EQ(tokens[0].type, test.second.type);
+		EXPECT_EQ(tokens[0].text, test.second.text);
+		EXPECT_EQ(tokens[0].start_index, test.second.start_index);
+		EXPECT_EQ(tokens[0].end_index, test.second.end_index);
 	}
 }
 

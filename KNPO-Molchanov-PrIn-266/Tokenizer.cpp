@@ -1,4 +1,3 @@
-#include <regex>
 #include <vector>
 #include <set>
 #include <regex>
@@ -48,8 +47,8 @@ TOKEN_TYPE Tokenizer::TokenRegex::get_type() {
 \param[out] m Объект, в котором хранятся данные о результате сопоставления
 \return Флаг, указывающий об успешности результата сопоставления 
 */
-bool Tokenizer::TokenRegex::match(std::string::const_iterator start, std::string::const_iterator end, std::smatch& m) {
-	return std::regex_search(start, end, m, matching_regex);
+bool Tokenizer::TokenRegex::match(const std::string& str, int start_index, std::smatch& m) {
+	return std::regex_search(str.begin() + start_index, str.end(), m, matching_regex);
 }
 
 
@@ -135,14 +134,14 @@ void Tokenizer::ignore(TOKEN_TYPE type) {
 \return Итератор, указывающий на символ, следующий сразу после последнего символа считанного токена
 \throw NoTokenFoundError В случае, если не было найдено соответствующего шаблона для извлечения токена
 */
-std::string::const_iterator Tokenizer::extract_token(std::string::const_iterator start, std::string::const_iterator end, std::vector<Token>& tokens) {
+int Tokenizer::extract_token(const std::string& str, int start_index, std::vector<Token>& tokens) {
 	std::smatch matched_token;
 	TOKEN_TYPE type = TOKEN_TYPE::UNSPECIFIED;
 
 	// Для каждого заданного шаблона токена...
 	for (TokenRegex token_regex : token_regexes) {
 		// Если шаблон токена был найден...
-		if (token_regex.match(start, end, matched_token)) {
+		if (token_regex.match(str, start_index, matched_token)) {
 			// ...извлечь его тип
 			type = token_regex.get_type();
 			// ...прекратить цикл
@@ -159,10 +158,14 @@ std::string::const_iterator Tokenizer::extract_token(std::string::const_iterator
 	// Если найденный токен не нужно игнорировать, поместить его
 	// в список найденных токенов
 	if (ignored_tokens.find(type) == ignored_tokens.end()) {
-		tokens.push_back(Token{ type, matched_token.str() });
+		std::string text = matched_token[0].str();
+		int start_index = matched_token[0].first - str.begin();
+		int end_index = matched_token[0].second - str.begin() - 1;
+
+		tokens.push_back(Token{ type, text, start_index, end_index });
 	}
 
-	return matched_token.suffix().first;
+	return matched_token[0].second - str.begin();
 }
 
 /*!
@@ -173,12 +176,11 @@ std::string::const_iterator Tokenizer::extract_token(std::string::const_iterator
 \param[out] tokens Считанные токены
 */
 void Tokenizer::tokenize(const std::string& str, std::vector<Token>& tokens) {
-	std::string::const_iterator start = str.begin();
-	std::string::const_iterator end = str.end();
+	int i = 0;
 
 	// Пока не пройдена вся строка...
-	while (start < end) {
+	while (i < str.size()) {
 		// ...извлечь очередной токен
-		start = extract_token(start, end, tokens);
+		i = extract_token(str, i, tokens);
 	}
 }

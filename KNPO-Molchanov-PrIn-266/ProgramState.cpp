@@ -150,7 +150,6 @@ int ProgramState::get_label_address(const std::string& label_name) {
 \param[in] address Адрес метки
 */
 void ProgramState::add_label(const std::string& label_name, int address) {
-	check_instr_address(address);
 	labels[label_name] = address;
 }
 

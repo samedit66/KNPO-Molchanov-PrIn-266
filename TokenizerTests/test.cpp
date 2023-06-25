@@ -242,7 +242,7 @@ TEST(TokenizerTest, ComplexTest) {
 	for (int i = 0; i < tokens.size(); i++) {
 		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
 		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
-		EXPECT_EQ(tokens[i].start_index, expeceted_tokens[i].start_index);
-		EXPECT_EQ(tokens[i].end_index, expeceted_token[i].end_index);
+		EXPECT_EQ(tokens[i].start_index, expected_tokens[i].start_index);
+		EXPECT_EQ(tokens[i].end_index, expected_tokens[i].end_index);
 	}
 }

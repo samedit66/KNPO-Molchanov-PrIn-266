@@ -1,0 +1,24 @@
+﻿  Instruction.cpp
+  Interpreter.cpp
+  KNPO-Molchanov-PrIn-266.cpp
+  MnemonicTranslator.cpp
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(103): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(122): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(141): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(158): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(175): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(193): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(916): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(920): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(926): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(928): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(948): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(965): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(1011): warning C4018: >=: несоответствие типов со знаком и без знака
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\mnemonictranslator.cpp(1093): warning C4018: <: несоответствие типов со знаком и без знака
+  ProgramState.cpp
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\programstate.cpp(251): warning C4018: <: несоответствие типов со знаком и без знака
+  Tokenizer.cpp
+c:\users\пользователь\source\repos\knpo-molchanov-prin-266\knpo-molchanov-prin-266\tokenizer.cpp(189): warning C4018: <: несоответствие типов со знаком и без знака
+  Создание кода...
+  KNPO-Molchanov-PrIn-266.vcxproj -> C:\Users\Пользователь\source\repos\KNPO-Molchanov-PrIn-266\Debug\KNPO-Molchanov-PrIn-266.exe

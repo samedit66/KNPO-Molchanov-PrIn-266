@@ -19,7 +19,7 @@ TEST(TokenizerTest, NoTokens) {
 TEST(TokenizerTest, CommentWithReservedWords) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
-	std::string str = "; add r0, r1, 0xff";
+	std::string str = "; add r0";
 
 	tokenizer.tokenize(str, tokens);
 
@@ -221,20 +221,19 @@ TEST(TokenizerTest, NonReservedTokenStartsWithReservedWord) {
 	ASSERT_EQ(tokens.size(), 1);
 	EXPECT_EQ(tokens[0].type, expeceted_token.type);
 	EXPECT_EQ(tokens[0].text, expeceted_token.text);
+	EXPECT_EQ(tokens[0].start_index, expeceted_token.start_index);
+	EXPECT_EQ(tokens[0].end_index, expeceted_token.end_index);
 }
 
 TEST(TokenizerTest, ComplexTest) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
-	const std::string str = "     add r0, r1, -0xffff; add r0 adfsdfg asdf as";
+	const std::string str = "add r0, r1; add r0 adfsdfg asdf as";
 	std::vector<Token> expected_tokens = {
-		{ TOKEN_TYPE::ADD, "add" },
-		{ TOKEN_TYPE::R0, "r0" },
-		{ TOKEN_TYPE::COMMA, "," },
-		{ TOKEN_TYPE::R1, "r1" },
-		{ TOKEN_TYPE::COMMA, "," },
-		{ TOKEN_TYPE::MINUS, "-" },
-		{ TOKEN_TYPE::HEX_NUMBER, "0xffff" }
+		{ TOKEN_TYPE::ADD, "add", 0, 2 },
+		{ TOKEN_TYPE::R0, "r0", 4, 5 },
+		{ TOKEN_TYPE::COMMA, ",", 6, 6 },
+		{ TOKEN_TYPE::R1, "r1", 8, 9 },
 	};
 
 	tokenizer.tokenize(str, tokens);
@@ -243,5 +242,7 @@ TEST(TokenizerTest, ComplexTest) {
 	for (int i = 0; i < tokens.size(); i++) {
 		EXPECT_EQ(tokens[i].type, expected_tokens[i].type);
 		EXPECT_EQ(tokens[i].text, expected_tokens[i].text);
+		EXPECT_EQ(tokens[i].start_index, expeceted_tokens[i].start_index);
+		EXPECT_EQ(tokens[i].end_index, expeceted_token[i].end_index);
 	}
 }

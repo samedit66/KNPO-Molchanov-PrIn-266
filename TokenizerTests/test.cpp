@@ -183,7 +183,7 @@ TEST(TokenizerTest, UnknownToken) {
 	std::vector<Token> tokens;
 	std::string str = "!";
 
-	ASSERT_THROW(tokenizer.tokenize(str, tokens), NoTokenFoundError);
+	ASSERT_THROW(tokenizer.tokenize(str, tokens), TokenizerError);
 }
 
 TEST(TokenizerTest, UnclosedString) {
@@ -191,7 +191,7 @@ TEST(TokenizerTest, UnclosedString) {
 	std::vector<Token> tokens;
 	std::string str = "\"hello world";
 
-	ASSERT_THROW(tokenizer.tokenize(str, tokens), NoTokenFoundError);
+	ASSERT_THROW(tokenizer.tokenize(str, tokens), TokenizerError);
 }
 
 TEST(TokenizerTest, UnclosedChar) {
@@ -199,7 +199,7 @@ TEST(TokenizerTest, UnclosedChar) {
 	std::vector<Token> tokens;
 	std::string str = "'a";
 
-	ASSERT_THROW(tokenizer.tokenize(str, tokens), NoTokenFoundError);
+	ASSERT_THROW(tokenizer.tokenize(str, tokens), TokenizerError);
 }
 
 TEST(TokenizerTest, CharHoldsOnlyOneSymbol) {
@@ -207,7 +207,7 @@ TEST(TokenizerTest, CharHoldsOnlyOneSymbol) {
 	std::vector<Token> tokens;
 	std::string str = "'aascasc'";
 
-	ASSERT_THROW(tokenizer.tokenize(str, tokens), NoTokenFoundError);
+	ASSERT_THROW(tokenizer.tokenize(str, tokens), TokenizerError);
 }
 
 TEST(TokenizerTest, NonReservedTokenStartsWithReservedWord) {

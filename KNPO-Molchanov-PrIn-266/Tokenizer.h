@@ -64,7 +64,7 @@ enum class TOKEN_TYPE {
 Класс, описывающий ошибку, возникающую в случае, если не было найдено 
 соответствующего щаблона токена
 */
-class NoTokenFoundError {
+class TokenizerError {
 protected:
 	/// Сообщение об ошибке
 	std::string msg;
@@ -74,17 +74,23 @@ public:
 	Конструктор ошибки
 	\param[in] m Сообщение об ошибке
 	*/
-	NoTokenFoundError(const std::string& m);
+	TokenizerError(const std::string& m);
 
-	/*
+	/*!
 	Возвращает сообщение об ошибке
 	\return сообщение об ошибке
 	*/
-	virtual std::string what() const;
+	std::string what() const;
+
+	/*!
+	Меняет сообщение об ошибке
+	\param[in] m Новое сообщение об ошибке
+	*/
+	void change_error_message(const std::string& m);
 };
 
 
-/*
+/*!
 Представление токена в программе
 */
 struct Token {

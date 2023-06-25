@@ -9,7 +9,7 @@
 Конструктор ошибки об отсутствии токена
 \param[in] m Сообщение об ошибке
 */
-NoTokenFoundError::NoTokenFoundError(const std::string& m) {
+TokenizerError::TokenizerError(const std::string& m) {
 	msg = m;
 }
 
@@ -17,10 +17,17 @@ NoTokenFoundError::NoTokenFoundError(const std::string& m) {
 Возвращает сообщение об ошибке
 \return сообщение об ошибке
 */
-std::string NoTokenFoundError::what() const {
+std::string TokenizerError::what() const {
 	return msg;
 }
 
+/*!
+Меняет сообщение об ошибке
+\param[in] m Новое сообщение об ошибке
+*/
+void TokenizerError::change_error_message(const std::string& m) {
+	msg = m;
+}
 
 /*!
 Конструктор шаблона-токена
@@ -152,7 +159,7 @@ int Tokenizer::extract_token(const std::string& str, int start_index, std::vecto
 	// Если токен не был определен, то выкинуть исключение о том,
 	// что подходящий токен не был найден
 	if (type == TOKEN_TYPE::UNSPECIFIED) {
-		throw NoTokenFoundError("Синтаксическая ошибка");
+		throw TokenizerError("Синтаксическая ошибка");
 	}
 
 	// Если найденный токен не нужно игнорировать, поместить его

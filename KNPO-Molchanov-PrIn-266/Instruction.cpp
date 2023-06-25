@@ -407,7 +407,7 @@ StiInstr::StiInstr(REGISTER dest, REGISTER src) : dest{ dest }, src{ src } {
 
 void StiInstr::execute(ProgramState& state) const {
 	int address = state.get_register_value(dest);
-	int value = state.get_memory_value(address);
+	int value = state.get_register_value(src);
 	state.set_memory_value(address, value);
 	state.inc_pc();
 }

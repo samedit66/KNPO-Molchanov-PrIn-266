@@ -19,75 +19,75 @@ ProgramState::ProgramState(int n) {
 }
 
 /*!
-Проверяет, может ли использоваться адрес в качестве допустимого адреса памяти
-\param[in] address Адрес для проверки
+РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РµС‚ Р»Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ Р°РґСЂРµСЃ РІ РєР°С‡РµСЃС‚РІРµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ Р°РґСЂРµСЃР° РїР°РјСЏС‚Рё
+\param[in] address РђРґСЂРµСЃ РґР»СЏ РїСЂРѕРІРµСЂРєРё
 */
 void ProgramState::check_memory_address(int address) {
 	if (address < 0 || address >= MEMORY_SIZE) {
-		throw RuntimeError("Недопустимый адрес \"" + std::to_string(address) + "\"");
+		throw RuntimeError("РќРµРґРѕРїСѓСЃС‚РёРјС‹Р№ Р°РґСЂРµСЃ \"" + std::to_string(address) + "\"");
 	}
 }
 
 /*!
-Проверяет, может ли использоваться имя в качестве допустимого имени метки
-\param[in] label_name Имя для проверки
+РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РµС‚ Р»Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РёРјСЏ РІ РєР°С‡РµСЃС‚РІРµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ РёРјРµРЅРё РјРµС‚РєРё
+\param[in] label_name РРјСЏ РґР»СЏ РїСЂРѕРІРµСЂРєРё
 */
 void ProgramState::check_label_name(const std::string& label_name) {
 	if (labels.count(label_name) == 0) {
-		throw RuntimeError("Неизвестная метка \"" + label_name + "\"");
+		throw RuntimeError("РќРµРёР·РІРµСЃС‚РЅР°СЏ РјРµС‚РєР° \"" + label_name + "\"");
 	}
 }
 
 /*!
-Проверяет, может ли использоваться имя в качестве допустимого имени ячейки памяти
-\param[in] label_name Имя для проверки
+РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РµС‚ Р»Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РёРјСЏ РІ РєР°С‡РµСЃС‚РІРµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ РёРјРµРЅРё СЏС‡РµР№РєРё РїР°РјСЏС‚Рё
+\param[in] label_name РРјСЏ РґР»СЏ РїСЂРѕРІРµСЂРєРё
 */
 void ProgramState::check_data_label_name(const std::string& data_label_name) {
 	if (data_labels.count(data_label_name) == 0) {
-		throw RuntimeError("Неизвестное имя ячейки памяти \"" + data_label_name + "\"");
+		throw RuntimeError("РќРµРёР·РІРµСЃС‚РЅРѕРµ РёРјСЏ СЏС‡РµР№РєРё РїР°РјСЏС‚Рё \"" + data_label_name + "\"");
 	}
 }
 
 /*!
-Проверяет, может ли использоваться адрес в качестве допустимого адреса инструкции
-\param[in] address Адрес для проверки
+РџСЂРѕРІРµСЂСЏРµС‚, РјРѕР¶РµС‚ Р»Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ Р°РґСЂРµСЃ РІ РєР°С‡РµСЃС‚РІРµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ Р°РґСЂРµСЃР° РёРЅСЃС‚СЂСѓРєС†РёРё
+\param[in] address РђРґСЂРµСЃ РґР»СЏ РїСЂРѕРІРµСЂРєРё
 */
 void ProgramState::check_instr_address(int address) {
 	if (address < 0 || address >= instr_count) {
-		throw RuntimeError("Некорретный адрес инструкции \"" + std::to_string(address) + "\"");
+		throw RuntimeError("РќРµРєРѕСЂСЂРµС‚РЅС‹Р№ Р°РґСЂРµСЃ РёРЅСЃС‚СЂСѓРєС†РёРё \"" + std::to_string(address) + "\"");
 	}
 }
 
 /*!
-Возвращает флаг, "работает" ли ещё интерпретатор
-\return Флаг, "работает" ли ещё интерпретатор
+Р’РѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі, "СЂР°Р±РѕС‚Р°РµС‚" Р»Рё РµС‰С‘ РёРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂ
+\return Р¤Р»Р°Рі, "СЂР°Р±РѕС‚Р°РµС‚" Р»Рё РµС‰С‘ РёРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂ
 */
 bool ProgramState::is_running() const {
 	return pc < instr_count;
 }
 
 /*!
-Возвращает значение регистра
-\param[in] r Регистр
-\return Значение регистра
+Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЂРµРіРёСЃС‚СЂР°
+\param[in] r Р РµРіРёСЃС‚СЂ
+\return Р—РЅР°С‡РµРЅРёРµ СЂРµРіРёСЃС‚СЂР°
 */
 int ProgramState::get_register_value(REGISTER r) const {
 	return registers.at((int)r);
 }
 
 /*!
-Устанавливает значение регистра
-\param[in] r Регистр
-\param[in] value Значение
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЂРµРіРёСЃС‚СЂР°
+\param[in] r Р РµРіРёСЃС‚СЂ
+\param[in] value Р—РЅР°С‡РµРЅРёРµ
 */
 void ProgramState::set_register_value(REGISTER r, int value) {
 	registers[(int)r] = value;
 }
 
 /*!
-Возвращает значение из памяти по имени
-\param[in] name Имя
-\return Значение из памяти по имени
+Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ РёРјРµРЅРё
+\param[in] name РРјСЏ
+\return Р—РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ РёРјРµРЅРё
 */
 int ProgramState::get_address_of_data_label(const std::string& name) {
 	check_data_label_name(name);
@@ -95,9 +95,9 @@ int ProgramState::get_address_of_data_label(const std::string& name) {
 }
 
 /*!
-Возвращает значение из памяти по имени
-\param[in] name Имя
-\return Значение из памяти по имени
+Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ РёРјРµРЅРё
+\param[in] name РРјСЏ
+\return Р—РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ РёРјРµРЅРё
 */
 int ProgramState::get_memory_value_by_name(const std::string& name) {
 	check_data_label_name(name);
@@ -105,9 +105,9 @@ int ProgramState::get_memory_value_by_name(const std::string& name) {
 }
 
 /*!
-Устанавливает значение в памяти по имени
-\param[in] name Имя
-\param[in] value Значение
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РІ РїР°РјСЏС‚Рё РїРѕ РёРјРµРЅРё
+\param[in] name РРјСЏ
+\param[in] value Р—РЅР°С‡РµРЅРёРµ
 */
 void ProgramState::set_memory_value_by_name(const std::string& name, int value) {
 	check_data_label_name(name);
@@ -115,9 +115,9 @@ void ProgramState::set_memory_value_by_name(const std::string& name, int value) 
 }
 
 /*!
-Возвращает значение из памяти по адресу
-\param[in] value Адрес
-\return Значение из памяти по адресу
+Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ
+\param[in] value РђРґСЂРµСЃ
+\return Р—РЅР°С‡РµРЅРёРµ РёР· РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ
 */
 int ProgramState::get_memory_value(int address) {
 	check_memory_address(address);
@@ -125,9 +125,9 @@ int ProgramState::get_memory_value(int address) {
 }
 
 /*!
-Устанавливает значение в памяти по адресу
-\param[in] address Адрес
-\param[in] value Значение
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РІ РїР°РјСЏС‚Рё РїРѕ Р°РґСЂРµСЃСѓ
+\param[in] address РђРґСЂРµСЃ
+\param[in] value Р—РЅР°С‡РµРЅРёРµ
 */
 void ProgramState::set_memory_value(int address, int value) {
 	check_memory_address(address);
@@ -135,9 +135,9 @@ void ProgramState::set_memory_value(int address, int value) {
 }
 
 /*!
-Возвращает адрес метки по имеми
-\param[in] label_name Имя метки
-\return Адрес метки
+Р’РѕР·РІСЂР°С‰Р°РµС‚ Р°РґСЂРµСЃ РјРµС‚РєРё РїРѕ РёРјРµРјРё
+\param[in] label_name РРјСЏ РјРµС‚РєРё
+\return РђРґСЂРµСЃ РјРµС‚РєРё
 */
 int ProgramState::get_label_address(const std::string& label_name) {
 	check_label_name(label_name);
@@ -145,41 +145,41 @@ int ProgramState::get_label_address(const std::string& label_name) {
 }
 
 /*!
-Добавляет новую метку
-\param[in] label_name Имя метки
-\param[in] address Адрес метки
+Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ РјРµС‚РєСѓ
+\param[in] label_name РРјСЏ РјРµС‚РєРё
+\param[in] address РђРґСЂРµСЃ РјРµС‚РєРё
 */
 void ProgramState::add_label(const std::string& label_name, int address) {
 	labels[label_name] = address;
 }
 
 /*!
-Возвращает индекс текущей инструкции
-\return Индекс текущей инструкции
+Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ С‚РµРєСѓС‰РµР№ РёРЅСЃС‚СЂСѓРєС†РёРё
+\return РРЅРґРµРєСЃ С‚РµРєСѓС‰РµР№ РёРЅСЃС‚СЂСѓРєС†РёРё
 */
 int ProgramState::get_pc() const {
 	return pc;
 }
 
 /*!
-Устанавливает индекс текущей инструкции
-\param[in] address Индекс
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РёРЅРґРµРєСЃ С‚РµРєСѓС‰РµР№ РёРЅСЃС‚СЂСѓРєС†РёРё
+\param[in] address РРЅРґРµРєСЃ
 */
 void ProgramState::set_pc(int address) {
 	pc = address;
 }
 
 /*!
-Переходит к индексу следующей инструкции
+РџРµСЂРµС…РѕРґРёС‚ Рє РёРЅРґРµРєСЃСѓ СЃР»РµРґСѓСЋС‰РµР№ РёРЅСЃС‚СЂСѓРєС†РёРё
 */
 void ProgramState::inc_pc() {
 	pc++;
 }
 
 /*!
-Извлекает строку из памяти
-\param[out] str Извлеченная строка
-\param[in] address Адрес в памяти, с которого нужно начать извлечение
+РР·РІР»РµРєР°РµС‚ СЃС‚СЂРѕРєСѓ РёР· РїР°РјСЏС‚Рё
+\param[out] str РР·РІР»РµС‡РµРЅРЅР°СЏ СЃС‚СЂРѕРєР°
+\param[in] address РђРґСЂРµСЃ РІ РїР°РјСЏС‚Рё, СЃ РєРѕС‚РѕСЂРѕРіРѕ РЅСѓР¶РЅРѕ РЅР°С‡Р°С‚СЊ РёР·РІР»РµС‡РµРЅРёРµ
 */
 void ProgramState::extract_string(std::string& str, int address) {
 	str = "";
@@ -197,18 +197,18 @@ void ProgramState::extract_string(std::string& str, int address) {
 	}
 
 	if (ch != '\0') {
-		throw RuntimeError("Не найден конец строки");
+		throw RuntimeError("РќРµ РЅР°Р№РґРµРЅ РєРѕРЅРµС† СЃС‚СЂРѕРєРё");
 	}
 }
 
 /*!
-Вызывает встроенную или определенную пользователем подпрограмму
-\param[in] label_name Имя подпрограммы
-\throw RuntimeError В случае, если стек вызовов функции переполнен
+Р’С‹Р·С‹РІР°РµС‚ РІСЃС‚СЂРѕРµРЅРЅСѓСЋ РёР»Рё РѕРїСЂРµРґРµР»РµРЅРЅСѓСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РїРѕРґРїСЂРѕРіСЂР°РјРјСѓ
+\param[in] label_name РРјСЏ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹
+\throw RuntimeError Р’ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё СЃС‚РµРє РІС‹Р·РѕРІРѕРІ С„СѓРЅРєС†РёРё РїРµСЂРµРїРѕР»РЅРµРЅ
 */
 void ProgramState::call_subroutine(const std::string& subroutione_name) {
 	if (call_stack.size() == MAX_CALL_STACK_DEPTH) {
-		throw RuntimeError("Слишком много подпрограмм вызвано");
+		throw RuntimeError("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ РїРѕРґРїСЂРѕРіСЂР°РјРј РІС‹Р·РІР°РЅРѕ");
 	}
 
 	if (subroutione_name == "putc") {
@@ -254,7 +254,7 @@ void ProgramState::call_subroutine(const std::string& subroutione_name) {
 		}
 
 		if (memory_alloc_index == MEMORY_SIZE && i != line.length()) {
-			throw RuntimeError("Не хватает памяти для записи строки");
+			throw RuntimeError("РќРµ С…РІР°С‚Р°РµС‚ РїР°РјСЏС‚Рё РґР»СЏ Р·Р°РїРёСЃРё СЃС‚СЂРѕРєРё");
 		}
 		inc_pc();
 	}
@@ -295,12 +295,12 @@ void ProgramState::call_subroutine(const std::string& subroutione_name) {
 }
 
 /*!
-Прекращает выполнение подпрограммы
-\throw RuntimeError В случае, если была попытка прекратить выполение подпрограммы вне какой-либо подпрограммы
+РџСЂРµРєСЂР°С‰Р°РµС‚ РІС‹РїРѕР»РЅРµРЅРёРµ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹
+\throw RuntimeError Р’ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё Р±С‹Р»Р° РїРѕРїС‹С‚РєР° РїСЂРµРєСЂР°С‚РёС‚СЊ РІС‹РїРѕР»РµРЅРёРµ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹ РІРЅРµ РєР°РєРѕР№-Р»РёР±Рѕ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹
 */
 void ProgramState::return_from_subroutine() {
 	if (call_stack.size() == 0) {
-		throw RuntimeError("Выполняющиеся подпрограммы отсуствуют");
+		throw RuntimeError("Р’С‹РїРѕР»РЅСЏСЋС‰РёРµСЃСЏ РїРѕРґРїСЂРѕРіСЂР°РјРјС‹ РѕС‚СЃСѓСЃС‚РІСѓСЋС‚");
 	}
 
 	set_pc(call_stack.top());
@@ -308,13 +308,13 @@ void ProgramState::return_from_subroutine() {
 }
 
 /*!
-Выделяет память для данных
-\param[in] data_label_name Метка ячейки памяти
-\throw RuntimeError В случае, если имя ячейки памяти уже определено, или если не хватает памяти
+Р’С‹РґРµР»СЏРµС‚ РїР°РјСЏС‚СЊ РґР»СЏ РґР°РЅРЅС‹С…
+\param[in] data_label_name РњРµС‚РєР° СЏС‡РµР№РєРё РїР°РјСЏС‚Рё
+\throw RuntimeError Р’ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё РёРјСЏ СЏС‡РµР№РєРё РїР°РјСЏС‚Рё СѓР¶Рµ РѕРїСЂРµРґРµР»РµРЅРѕ, РёР»Рё РµСЃР»Рё РЅРµ С…РІР°С‚Р°РµС‚ РїР°РјСЏС‚Рё
 */
 void ProgramState::allocate_memory(const std::string& data_label_name, const std::vector<int>& data) {
 	if (data_labels.count(data_label_name) > 0) {
-		throw RuntimeError("Имя переменной не может повторяться \"" + data_label_name + "\"");
+		throw RuntimeError("РРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№ РЅРµ РјРѕР¶РµС‚ РїРѕРІС‚РѕСЂСЏС‚СЊСЃСЏ \"" + data_label_name + "\"");
 	}
 
 	data_labels[data_label_name] = memory_alloc_index;
@@ -327,6 +327,6 @@ void ProgramState::allocate_memory(const std::string& data_label_name, const std
 	}
 
 	if (memory_alloc_index == MEMORY_SIZE && i != data.size()) {
-		throw RuntimeError("Не хватает памяти для записи всех значений");
+		throw RuntimeError("РќРµ С…РІР°С‚Р°РµС‚ РїР°РјСЏС‚Рё РґР»СЏ Р·Р°РїРёСЃРё РІСЃРµС… Р·РЅР°С‡РµРЅРёР№");
 	}
 }

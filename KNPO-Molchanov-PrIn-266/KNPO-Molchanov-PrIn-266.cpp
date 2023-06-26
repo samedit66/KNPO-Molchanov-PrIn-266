@@ -9,19 +9,19 @@
 
 int main(int argc, char* argv[]) {
 	if (argc != 2) {
-		std::cerr << "Ïðèìåð èñïîëüçîâàíèÿ: " << argv[0] << " <ôàéë.asm>" << std::endl;
+		std::cerr << "ÐŸÑ€Ð¸Ð¼ÐµÑ€ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ: " << argv[0] << " <Ñ„Ð°Ð¹Ð».asm>" << std::endl;
 		return 1;
 	}
 
 	std::string file_name(argv[1]);
 	if (file_name.substr(file_name.find_last_of(".") + 1) != "asm") {
-		std::cerr << "Îøèáêà: ôàéë \"" << argv[1] << "\" äîëæåí èìåòü ðàñøèðåíèå \".asm\"" << std::endl;
+		std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ñ„Ð°Ð¹Ð» \"" << argv[1] << "\" Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð¸Ð¼ÐµÑ‚ÑŒ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ðµ \".asm\"" << std::endl;
 		return 1;
 	}
 
 	std::ifstream input_file(file_name);
 	if (!input_file.is_open()) {
-		std::cerr << "Îøèáêà: ôàéë \"" << argv[1] << "\" íå ìîæåò áûòü îòêðûò" << std::endl;
+		std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ñ„Ð°Ð¹Ð» \"" << argv[1] << "\" Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚" << std::endl;
 		return 1;
 	}
 

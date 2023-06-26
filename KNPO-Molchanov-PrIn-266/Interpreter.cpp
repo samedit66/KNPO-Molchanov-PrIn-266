@@ -7,23 +7,23 @@
 #include "Tokenizer.h"
 
 /*!
-Выполняет интерпретацию инструкций на языке псевдо-ассемблера
-\param[in] input_file Входной файл
+Р’С‹РїРѕР»РЅСЏРµС‚ РёРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЋ РёРЅСЃС‚СЂСѓРєС†РёР№ РЅР° СЏР·С‹РєРµ РїСЃРµРІРґРѕ-Р°СЃСЃРµРјР±Р»РµСЂР°
+\param[in] input_file Р’С…РѕРґРЅРѕР№ С„Р°Р№Р»
 */
 void Interpreter::interpret(std::ifstream& input_file) {
-	// Считанные инструкции
+	// РЎС‡РёС‚Р°РЅРЅС‹Рµ РёРЅСЃС‚СЂСѓРєС†РёРё
 	std::vector<std::shared_ptr<Instr>> instrs;
 
-	// Карта меток
+	// РљР°СЂС‚Р° РјРµС‚РѕРє
 	std::map<std::string, int> labels;
 
-	// Ошибки, возникшие в процессе токенизации
+	// РћС€РёР±РєРё, РІРѕР·РЅРёРєС€РёРµ РІ РїСЂРѕС†РµСЃСЃРµ С‚РѕРєРµРЅРёР·Р°С†РёРё
 	std::vector<TokenizerError> tokenizer_errors;
 
-	// Синтаксические ошибки
+	// РЎРёРЅС‚Р°РєСЃРёС‡РµСЃРєРёРµ РѕС€РёР±РєРё
 	std::vector<SyntaxError> syntax_errors;
 
-	// Переводим мнемоники во внутрнее представление
+	// РџРµСЂРµРІРѕРґРёРј РјРЅРµРјРѕРЅРёРєРё РІРѕ РІРЅСѓС‚СЂРЅРµРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
 	MnemonicTranslator mnemonic_translator;
 	if (!mnemonic_translator.translate(input_file, instrs, labels, tokenizer_errors, syntax_errors)) {
 		for (const auto& err : tokenizer_errors) {
@@ -49,7 +49,7 @@ void Interpreter::interpret(std::ifstream& input_file) {
 			}
 		}
 		catch (RuntimeError& err) {
-			std::cout << "Строка " + std::to_string(instrs.at(state.get_pc())->get_line_number()) + ": " + err.what() << std::endl;
+			std::cout << "РЎС‚СЂРѕРєР° " + std::to_string(instrs.at(state.get_pc())->get_line_number()) + ": " + err.what() << std::endl;
 		}
 	}
 	catch (RuntimeError& err) {

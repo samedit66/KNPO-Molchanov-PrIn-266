@@ -7,16 +7,16 @@
 
 
 /*
-Устанавливает номер строки, на которой расположена инструкция
-\param[in] new_line_number Номер строки
+РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РЅРѕРјРµСЂ СЃС‚СЂРѕРєРё, РЅР° РєРѕС‚РѕСЂРѕР№ СЂР°СЃРїРѕР»РѕР¶РµРЅР° РёРЅСЃС‚СЂСѓРєС†РёСЏ
+\param[in] new_line_number РќРѕРјРµСЂ СЃС‚СЂРѕРєРё
 */
 void Instr::set_line_number(int new_line_number) {
 	line_number = new_line_number;
 }
 
 /*
-Возрвращает, на которой расположена инструкция
-\return Номер строки
+Р’РѕР·СЂРІСЂР°С‰Р°РµС‚, РЅР° РєРѕС‚РѕСЂРѕР№ СЂР°СЃРїРѕР»РѕР¶РµРЅР° РёРЅСЃС‚СЂСѓРєС†РёСЏ
+\return РќРѕРјРµСЂ СЃС‚СЂРѕРєРё
 */
 int Instr::get_line_number() const {
 	return line_number;
@@ -259,7 +259,7 @@ ShlRegInstr::ShlRegInstr(REGISTER dest, REGISTER src) : dest{ dest }, src{ src }
 void ShlRegInstr::execute(ProgramState& state) const {
 	int shift_count = state.get_register_value(src);
 	if (shift_count < 0) {
-		throw RuntimeError("Количество сдвигов не может быть отрицательным");
+		throw RuntimeError("РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРґРІРёРіРѕРІ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј");
 	}
 	int result = state.get_register_value(dest) << shift_count;
 	state.set_register_value(dest, result);
@@ -280,7 +280,7 @@ ShlImmInstr::ShlImmInstr(REGISTER dest, int imm_value) : dest{ dest }, imm_value
 
 void ShlImmInstr::execute(ProgramState& state) const {
 	if (imm_value < 0) {
-		throw RuntimeError("Количество сдвигов не может быть отрицательным");
+		throw RuntimeError("РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРґРІРёРіРѕРІ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј");
 	}
 	int result = state.get_register_value(dest) << imm_value;
 	state.set_register_value(dest, result);

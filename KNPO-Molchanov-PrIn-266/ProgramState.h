@@ -47,7 +47,7 @@ private:
 	/// Таблица меток для данных
 	std::map<std::string, int> data_labels;
 
-	/// Стек для вызовов функций
+	/// Стек для вызовов подпрограмм
 	std::stack<int> call_stack;
 
 	/// Индекс текущей инструкции
@@ -91,6 +91,13 @@ public:
 	\return Флаг, "работает" ли ещё интерпретатор
 	*/
 	bool is_running() const;
+
+	/*!
+	Извлекает строку из памяти
+	\param[out] str Извлеченная строка
+	\param[in] address Адрес в памяти, с которого нужно начать извлечение
+	*/
+	void extract_string(std::string& str, int address);
 
 	/*!
 	Возвращает значение регистра

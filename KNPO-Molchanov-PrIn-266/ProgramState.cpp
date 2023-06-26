@@ -177,6 +177,31 @@ void ProgramState::inc_pc() {
 }
 
 /*!
+Извлекает строку из памяти
+\param[out] str Извлеченная строка
+\param[in] address Адрес в памяти, с которого нужно начать извлечение
+*/
+void ProgramState::extract_string(std::string& str, int address) {
+	str = "";
+
+	char ch;
+	while (address < MEMORY_SIZE) {
+		ch = get_memory_value(address);
+
+		if (ch == '\0') {
+			break;
+		}
+
+		str += ch;
+		address++;
+	}
+
+	if (ch != '\0') {
+		throw RuntimeError("Не найден конец строки");
+	}
+}
+
+/*!
 Вызывает встроенную или определенную пользователем подпрограмму
 \param[in] label_name Имя подпрограммы
 \throw RuntimeError В случае, если стек вызовов функции переполнен
@@ -192,26 +217,73 @@ void ProgramState::call_subroutine(const std::string& subroutione_name) {
 		inc_pc();
 	}
 	else if (subroutione_name == "puts") {
+		std::string str;
 		int str_address = get_register_value(REGISTER::R0);
+		extract_string(str, str_address);
 
-		char c = get_memory_value(str_address);
-		while (str_address < MEMORY_SIZE && c != '\0') {
-			std::cout << c;
-			str_address++;
-			c = get_memory_value(str_address);
-		}
-		
-		if (c != '\0') {
-			throw RuntimeError("Не найден конец строки");
-		}
-
-		std::cout << std::endl;
+		std::cout << str << std::endl;
+		inc_pc();
+	}
+	else if (subroutione_name == "puti") {
+		int r0_value = get_register_value(REGISTER::R0);
+		std::cout << r0_value << std::endl;
 		inc_pc();
 	}
 	else if (subroutione_name == "getc") {
 		char input;
 		std::cin >> input;
 		set_register_value(REGISTER::R0, input);
+		inc_pc();
+	}
+	else if (subroutione_name == "geti") {
+		int input;
+		std::cin >> input;
+		set_register_value(REGISTER::R0, input);
+		inc_pc();
+	}
+	else if (subroutione_name == "getline") {
+		std::string line;
+		std::getline(std::cin, line);
+		
+		set_register_value(REGISTER::R0, memory_alloc_index);
+		int i = 0;
+		while (memory_alloc_index < MEMORY_SIZE && i < line.length()) {
+			set_memory_value(memory_alloc_index, line[i]);
+			memory_alloc_index++;
+			i++;
+		}
+
+		if (memory_alloc_index == MEMORY_SIZE && i != line.length()) {
+			throw RuntimeError("Не хватает памяти для записи строки");
+		}
+		inc_pc();
+	}
+	else if (subroutione_name == "find") {
+		int str_address = get_register_value(REGISTER::R0);
+		int substr_address = get_register_value(REGISTER::R1);
+		std::string str, substr;
+		extract_string(str, str_address);
+		extract_string(substr, substr_address);
+		set_register_value(REGISTER::R2, str.find(substr));
+		inc_pc();
+	}
+	else if (subroutione_name == "length") {
+		std::string str;
+		int str_address = get_register_value(REGISTER::R0);
+		extract_string(str, str_address);
+		set_register_value(REGISTER::R1, str.length());
+		inc_pc();
+	}
+	else if (subroutione_name == "ispalindrom") {
+		std::string str;
+		int str_address = get_register_value(REGISTER::R0);
+		extract_string(str, str_address);
+		if (str == std::string(str.rbegin(), str.rend())) {
+			set_register_value(REGISTER::R1, 1);
+		}
+		else {
+			set_register_value(REGISTER::R1, 0);
+		}
 		inc_pc();
 	}
 	else {

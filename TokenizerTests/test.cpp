@@ -214,7 +214,7 @@ TEST(TokenizerTest, NonReservedTokenStartsWithReservedWord) {
 	Tokenizer tokenizer;
 	std::vector<Token> tokens;
 	std::string str = "callmelater";
-	Token expeceted_token = { TOKEN_TYPE::NAME, "callmelater" };
+	Token expeceted_token = { TOKEN_TYPE::NAME, "callmelater", 0, 10 };
 
 	tokenizer.tokenize(str, tokens);
 

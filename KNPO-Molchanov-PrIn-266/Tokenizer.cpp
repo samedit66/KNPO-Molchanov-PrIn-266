@@ -146,7 +146,7 @@ int Tokenizer::extract_token(const std::string& str, int start_index, std::vecto
 	TOKEN_TYPE type = TOKEN_TYPE::UNSPECIFIED;
 
 	// Для каждого заданного шаблона токена...
-	for (TokenRegex token_regex : token_regexes) {
+	for (TokenRegex& token_regex : token_regexes) {
 		// Если шаблон токена был найден...
 		if (token_regex.match(str, start_index, matched_token)) {
 			// ...извлечь его тип
